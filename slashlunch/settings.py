@@ -27,7 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-SLACK_KEY = 'yCQu0cg0e5nXJnFuL1pbVj1E'
+
+# Slack key
+
+SLACK_KEY = os.getenv('SLACK_KEY')
+
+
+# Foursquare keys
+
+FS_CLIENT_ID = os.getenv('FS_CLIENT_ID')
+FS_CLIENT_SECRET = os.getenv('FS_CLIENT_SECRET')
 
 
 # Application definition
