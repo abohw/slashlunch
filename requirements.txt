@@ -1,2 +1,5 @@
 Django==1.9.6
+foursquare==1!2015.5.26
 gunicorn==19.6.0
+requests==2.10.0
+six==1.10.0
