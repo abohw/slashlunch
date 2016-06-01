@@ -25,7 +25,7 @@ SECRET_KEY = '2i@d^j6*q459k_r=-g&v)9x0#0-)lcpa82t#en8$$yzft7tq#2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Slack key
