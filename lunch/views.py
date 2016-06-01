@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -26,9 +28,21 @@ def lunch(request):
     '''
     client = foursquare.Foursquare(client_id=settings.FS_CLIENT_ID, client_secret=settings.FS_CLIENT_SECRET)
     token = request.POST.get('token')
-    venue = client.venues('40a55d80f964a52020f31ee3')
-    something = venue['venue']['name']
-    print something
+#    venue = client.venues('40a55d80f964a52020f31ee3')
+    venues = client.venues.explore(params={'ll': '39.1015337,-84.5173639', 'limit': '5', 'openNow': '1'})
+
 #    pprint(venue)
-    text = 'temp'
-    return HttpResponse(token)
+
+    places = []
+    x = 0
+    recs = ''
+
+    for groups in venues['groups']:
+        for items in groups['items']:
+            places.append(items['venue']['name'])
+
+    for index, item in enumerate(places):
+        recs += '%s %s \n' % (index+1, item)
+
+# use user_name when actually in Slack
+    return HttpResponse(recs)
