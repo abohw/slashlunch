@@ -34,18 +34,18 @@ def lunch(request):
 #    pprint(venue)
 
     places = []
-    recs = ''
+    recs = "Alright, I've pulled together some options for you... \n"
 
     for groups in venues['groups']:
         for items in groups['items']:
             places.append(items['venue']['name'])
 
     for index, item in enumerate(places):
-        if index == 0: emoji = ":one:"
-        if index == 1: emoji = ":two:"
-        if index == 2: emoji = ":three:"
-        if index == 3: emoji = ":four:"
-        if index == 4: emoji = ":five:"
+        if index == 0: emoji = ":one: "
+        if index == 1: emoji = ":two: "
+        if index == 2: emoji = ":three: "
+        if index == 3: emoji = ":four: "
+        if index == 4: emoji = ":five: "
         recs += '%s %s \n' % (emoji, item)
 
 # use user_name when actually in Slack
