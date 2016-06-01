@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.http import JsonResponse
 import foursquare
 from django.conf import settings
 from pprint import pprint
@@ -34,7 +34,6 @@ def lunch(request):
 #    pprint(venue)
 
     places = []
-    x = 0
     recs = ''
 
     for groups in venues['groups']:
@@ -42,7 +41,13 @@ def lunch(request):
             places.append(items['venue']['name'])
 
     for index, item in enumerate(places):
-        recs += '%s %s \n' % (index+1, item)
+        if index == 0: emoji = ":one:"
+        if index == 1: emoji = ":two:"
+        if index == 2: emoji = ":three:"
+        if index == 3: emoji = ":four:"
+        if index == 4: emoji = ":five:"
+        recs += '%s %s \n' % (emoji, item)
 
 # use user_name when actually in Slack
-    return HttpResponse(recs)
+
+    return JsonResponse({"response_type": "in_channel", "text": recs})
