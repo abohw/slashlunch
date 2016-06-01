@@ -15,8 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from lunch import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^lunch/', lunch)
+    url(r'^lunch$', views.lunch, name='lunch')
 ]
