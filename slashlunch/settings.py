@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SLACK_KEY = 'yCQu0cg0e5nXJnFuL1pbVj1E'
+
 
 # Application definition
 
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'lunch'
 ]
 
 MIDDLEWARE_CLASSES = [
