@@ -52,6 +52,6 @@ def lunch(request):
         if index == 2: emoji = ":three: "
         if index == 3: emoji = ":four: "
         if index == 4: emoji = ":five: "
-        recs += '%s &lt;%s|%s&gt; \n' % (emoji, name[1], name[0])
+        recs += '%s %s \n%s \n' % (emoji, name[0], name[1])
 
     return JsonResponse({"response_type": "in_channel", "text": recs})
