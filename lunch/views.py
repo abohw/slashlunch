@@ -17,12 +17,10 @@ import random
 def lunch(request):
 
     client = foursquare.Foursquare(client_id=settings.FS_CLIENT_ID, client_secret=settings.FS_CLIENT_SECRET)
-    slackname = request.POST.get('user_name')
-    slackid = request.POST.get('user_id')
+
     slacktoken = request.POST.get('token')
 
-    if slacktoken is not SLACK_KEY: return HttpResponseForbidden()
-    else:
+    if slacktoken is settings.SLACK_KEY:
 
         venues = client.venues.explore(params={
         'll': '39.1015337,-84.5173639',
@@ -30,8 +28,6 @@ def lunch(request):
         'section': 'food',
         'price': '1,2',
         'openNow': '1'})
-
-    #    pprint(venue)
 
         places = []
         recs = "Hi there! :wave: \n"
@@ -50,8 +46,6 @@ def lunch(request):
 
         choices = random.sample(places, 5)
 
-    # menu url
-
         for index, name in enumerate(choices):
             if index == 0: emoji = ":one: "
             if index == 1: emoji = ":two: "
@@ -61,3 +55,5 @@ def lunch(request):
             recs += '%s %s \n%s \n' % (emoji, name[0], name[1])
 
         return JsonResponse({"response_type": "in_channel", "text": recs})
+
+    else: return HttpResponseForbidden()
