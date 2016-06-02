@@ -15,20 +15,8 @@ import random
 @csrf_exempt
 def lunch(request):
 
-    '''
-    token=SLACK_KEY
-    team_id=T0001
-    team_domain=example
-    channel_id=C2147483705
-    channel_name=test
-    user_id=U2147483697
-    user_name=Steve
-    command=/weather
-    text=94070
-    response_url=https://hooks.slack.com/commands/1234/5678
-    '''
     client = foursquare.Foursquare(client_id=settings.FS_CLIENT_ID, client_secret=settings.FS_CLIENT_SECRET)
-    token = request.POST.get('token')
+    username = request.POST.get('first_name')
 
     venues = client.venues.explore(params={
     'll': '39.1015337,-84.5173639',
@@ -40,7 +28,7 @@ def lunch(request):
 #    pprint(venue)
 
     places = []
-    recs = ":wave: \n"
+    recs = ":wave: %s \n" % username
 
     for groups in venues['groups']:
         for items in groups['items']:
