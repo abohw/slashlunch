@@ -16,7 +16,8 @@ import random
 def lunch(request):
 
     client = foursquare.Foursquare(client_id=settings.FS_CLIENT_ID, client_secret=settings.FS_CLIENT_SECRET)
-    username = request.POST.get('user_name')
+    slackname = request.POST.get('user_name')
+    slackid = request.POST.get('user_id')
 
     venues = client.venues.explore(params={
     'll': '39.1015337,-84.5173639',
@@ -28,7 +29,7 @@ def lunch(request):
 #    pprint(venue)
 
     places = []
-    recs = "Hi @%s! :wave: \n" % username
+    recs = "Hi &lt;%s|@%s&gt;! :wave: \n" % (slackid, slackname)
 
     for groups in venues['groups']:
         for items in groups['items']:
