@@ -28,7 +28,7 @@ def lunch(request):
 #    pprint(venue)
 
     places = []
-    recs = ":wave: %s \n" % username
+    recs = "Hi %s! :wave: \n" % username
 
     for groups in venues['groups']:
         for items in groups['items']:
