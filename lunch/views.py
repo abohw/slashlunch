@@ -29,7 +29,7 @@ def lunch(request):
 #    pprint(venue)
 
     places = []
-    recs = "Hi &lt;%s|@%s&gt;! :wave: \n" % (slackid, slackname)
+    recs = "Hi &lt;@%s|%s&gt;! :wave: \n" % (slackid, slackname)
 
     for groups in venues['groups']:
         for items in groups['items']:
