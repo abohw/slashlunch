@@ -7,6 +7,7 @@ from django.http import JsonResponse
 import foursquare
 from django.conf import settings
 from pprint import pprint
+from django.http import HttpResponseForbidden
 import random
 
 # Create your views here.
@@ -18,41 +19,45 @@ def lunch(request):
     client = foursquare.Foursquare(client_id=settings.FS_CLIENT_ID, client_secret=settings.FS_CLIENT_SECRET)
     slackname = request.POST.get('user_name')
     slackid = request.POST.get('user_id')
+    slacktoken = request.POST.get('token')
 
-    venues = client.venues.explore(params={
-    'll': '39.1015337,-84.5173639',
-    'radius': '1750',
-    'section': 'food',
-    'price': '1,2',
-    'openNow': '1'})
+    if slacktoken is not SLACK_KEY: return HttpResponseForbidden()
+    else:
 
-#    pprint(venue)
+        venues = client.venues.explore(params={
+        'll': '39.1015337,-84.5173639',
+        'radius': '1750',
+        'section': 'food',
+        'price': '1,2',
+        'openNow': '1'})
 
-    places = []
-    recs = "Hi &lt;@%s|%s&gt;! :wave: \n" % (slackid, slackname)
+    #    pprint(venue)
 
-    for groups in venues['groups']:
-        for items in groups['items']:
+        places = []
+        recs = "Hi there! :wave: \n"
 
-            try:
-                url = items['venue']['menu']['url']
-            except KeyError:
-                url = items['venue']['url']
-            except IndexError:
-                pass
+        for groups in venues['groups']:
+            for items in groups['items']:
 
-            places.append([items['venue']['name'],url])
+                try:
+                    url = items['venue']['menu']['url']
+                except KeyError:
+                    url = items['venue']['url']
+                except IndexError:
+                    pass
 
-    choices = random.sample(places, 5)
+                places.append([items['venue']['name'],url])
 
-# menu url
+        choices = random.sample(places, 5)
 
-    for index, name in enumerate(choices):
-        if index == 0: emoji = ":one: "
-        if index == 1: emoji = ":two: "
-        if index == 2: emoji = ":three: "
-        if index == 3: emoji = ":four: "
-        if index == 4: emoji = ":five: "
-        recs += '%s %s \n%s \n' % (emoji, name[0], name[1])
+    # menu url
 
-    return JsonResponse({"response_type": "in_channel", "text": recs})
+        for index, name in enumerate(choices):
+            if index == 0: emoji = ":one: "
+            if index == 1: emoji = ":two: "
+            if index == 2: emoji = ":three: "
+            if index == 3: emoji = ":four: "
+            if index == 4: emoji = ":five: "
+            recs += '%s %s \n%s \n' % (emoji, name[0], name[1])
+
+        return JsonResponse({"response_type": "in_channel", "text": recs})
