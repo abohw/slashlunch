@@ -32,18 +32,26 @@ def lunch(request):
 
     for groups in venues['groups']:
         for items in groups['items']:
-            places.append(items['venue']['name'])
+
+            try:
+                url = items['venue']['menu']['url']
+            except KeyError:
+                url = items['venue']['url']
+            except IndexError:
+                pass
+
+            places.append([items['venue']['name'],url])
 
     choices = random.sample(places, 5)
 
 # menu url
 
-    for index, item in enumerate(choices):
+    for index, name in enumerate(choices):
         if index == 0: emoji = ":one: "
         if index == 1: emoji = ":two: "
         if index == 2: emoji = ":three: "
         if index == 3: emoji = ":four: "
         if index == 4: emoji = ":five: "
-        recs += '%s %s \n' % (emoji, item)
+        recs += '%s &lt;%s|%s&gt; \n' % (emoji, name[1], name[0])
 
     return JsonResponse({"response_type": "in_channel", "text": recs})
