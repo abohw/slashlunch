@@ -37,7 +37,7 @@ def lunch(request):
             try:
                 url = items['venue']['menu']['url']
             except KeyError:
-                url = items['venue']['url']
+                url = items['venue'].get('url', '')
             except IndexError:
                 pass
 
@@ -54,6 +54,8 @@ def lunch(request):
         if index == 3: emoji = ":four: "
         if index == 4: emoji = ":five: "
         recs += '%s %s \n%s \n' % (emoji, name[0], name[1])
+
+#    return JsonResponse({"response_type": "in_channel", "text": recs})
 
     if slacktoken == settings.SLACK_KEY: return JsonResponse({"response_type": "in_channel", "text": recs})
     else: return HttpResponseForbidden()
