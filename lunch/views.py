@@ -20,14 +20,32 @@ def lunch(request):
     slacktoken = request.POST.get('token')
     slackcopy = request.POST.get('text')
 
-    if slackcopy == "cheap":
+    if "cheap" in slackcopy:
+        recs = "Hi there! :wave: Here are some cheap lunch options:\n"
         venues = client.venues.explore(params={
         'll': '39.1015337,-84.5173639',
         'radius': '1750',
         'section': 'food',
         'price': '1',
         'openNow': '1'})
+    if "close" in slackcopy:
+        recs = "Hi there! :wave: Here are some close lunch options:\n"
+        venues = client.venues.explore(params={
+        'll': '39.1015337,-84.5173639',
+        'radius': '485',
+        'section': 'food',
+        'price': '1,2',
+        'openNow': '1'})
+    if "cheap" in slackcopy and "close" in slackcopy:
+        recs = "Hi there! :wave: Here are some cheap and close lunch options:\n"
+        venues = client.venues.explore(params={
+        'll': '39.1015337,-84.5173639',
+        'radius': '485',
+        'section': 'food',
+        'price': '1',
+        'openNow': '1'})
     else:
+        recs = "Hi there! :wave: Here are some lunch options:\n"
         venues = client.venues.explore(params={
         'll': '39.1015337,-84.5173639',
         'radius': '1750',
@@ -36,7 +54,6 @@ def lunch(request):
         'openNow': '1'})
 
     places = []
-    recs = "Hi there! :wave: \n"
 
     for groups in venues['groups']:
         for items in groups['items']:
