@@ -18,15 +18,22 @@ def lunch(request):
 
     client = foursquare.Foursquare(client_id=settings.FS_CLIENT_ID, client_secret=settings.FS_CLIENT_SECRET)
     slacktoken = request.POST.get('token')
+    slackcopy = request.POST.get('text')
 
-    venues = client.venues.explore(params={
-    'll': '39.1015337,-84.5173639',
-    'radius': '1750',
-    'section': 'food',
-    'price': '1,2',
-    'openNow': '1'})
-
-#    pprint(venue)
+    if slackcopy == "cheap":
+        venues = client.venues.explore(params={
+        'll': '39.1015337,-84.5173639',
+        'radius': '1750',
+        'section': 'food',
+        'price': '1',
+        'openNow': '1'})
+    else:
+        venues = client.venues.explore(params={
+        'll': '39.1015337,-84.5173639',
+        'radius': '1750',
+        'section': 'food',
+        'price': '1,2',
+        'openNow': '1'})
 
     places = []
     recs = "Hi there! :wave: \n"
@@ -41,11 +48,17 @@ def lunch(request):
             except IndexError:
                 pass
 
+            try:
+                cost = items['venue']['price']
+            except KeyError:
+                cost = items['venue'].get('price', '')
+            except IndexError:
+                pass
+
             places.append([items['venue']['name'],url])
 
-    choices = random.sample(places, 5)
-
-# menu url
+    if len(places) >= 5: choices = random.sample(places, 5)
+    else: choices = random.sample(places, len(places))
 
     for index, name in enumerate(choices):
         if index == 0: emoji = ":one: "
