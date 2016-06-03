@@ -28,7 +28,7 @@ def lunch(request):
         'section': 'food',
         'price': '1',
         'openNow': '1'})
-    if "close" in slackcopy:
+    elif "close" in slackcopy:
         recs = "Hi there! :wave: Here are some close lunch options:\n"
         venues = client.venues.explore(params={
         'll': '39.1015337,-84.5173639',
@@ -36,7 +36,7 @@ def lunch(request):
         'section': 'food',
         'price': '1,2',
         'openNow': '1'})
-    if "cheap" in slackcopy and "close" in slackcopy:
+    elif "cheap" in slackcopy and "close" in slackcopy:
         recs = "Hi there! :wave: Here are some cheap and close lunch options:\n"
         venues = client.venues.explore(params={
         'll': '39.1015337,-84.5173639',
