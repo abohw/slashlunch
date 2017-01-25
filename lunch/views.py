@@ -48,7 +48,7 @@ def lunch(request):
         recs = "Hi there! :wave: Here are some lunch options:\n"
         venues = client.venues.explore(params={
         'll': '39.1015337,-84.5173639',
-        'radius': '2790',
+        'radius': '2900',
         'section': 'food',
         'price': '1,2',
         'openNow': '1'})
