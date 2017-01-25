@@ -58,6 +58,7 @@ def lunch(request):
         'll': '39.1015337,-84.5173639',
         'radius': '2900',
         'query': slackcopy,
+        'price': '1,2',
         'openNow': '1'})
 
     places = []
@@ -69,13 +70,6 @@ def lunch(request):
                 url = items['venue']['menu']['url']
             except KeyError:
                 url = items['venue'].get('url', '')
-            except IndexError:
-                pass
-
-            try:
-                cost = items['venue']['price']
-            except KeyError:
-                cost = items['venue'].get('price', '')
             except IndexError:
                 pass
 
