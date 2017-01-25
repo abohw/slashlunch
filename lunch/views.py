@@ -44,7 +44,7 @@ def lunch(request):
         'section': 'food',
         'price': '1,2',
         'openNow': '1'})
-    elif slackcopy is not None:
+    elif not slackcopy:
         recs = "Hi there! :wave: Here are some options with %s:\n" % (slackcopy)
         venues = client.venues.explore(params={
         'll': '39.1015337,-84.5173639',
