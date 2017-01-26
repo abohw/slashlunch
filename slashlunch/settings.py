@@ -30,7 +30,8 @@ ALLOWED_HOSTS = ['*']
 
 # Slack key
 
-SLACK_KEY = os.getenv('SLACK_KEY')
+CASA_SLACK_KEY = os.getenv('CASA_SLACK_KEY')
+TS_SLACK_KEY = os.getenv('TS_SLACK_KEY')
 
 
 # Foursquare keys
