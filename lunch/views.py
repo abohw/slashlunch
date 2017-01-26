@@ -93,5 +93,5 @@ def lunch(request):
 
 #    return JsonResponse({"response_type": "in_channel", "text": recs})
 
-    if slacktoken in [TS_SLACK_KEY, CASA_SLACK_KEY]: return JsonResponse({"response_type": "in_channel", "text": recs})
+    if slacktoken in [settings.TS_SLACK_KEY, settings.CASA_SLACK_KEY]: return JsonResponse({"response_type": "in_channel", "text": recs})
     else: return HttpResponseForbidden()
