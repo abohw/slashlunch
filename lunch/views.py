@@ -20,12 +20,10 @@ def lunch(request):
     slacktoken = request.POST.get('token')
     slackcopy = request.POST.get('text')
 
-    if slacktoken == settings.CASA_SLACK_KEY:
-        office = '39.1015337,-84.5173639'
     if slacktoken == settings.TS_SLACK_KEY:
         office = '47.6139026,-122.3223522'
     else:
-        office = None
+        office = '39.1015337,-84.5173639'
 
     if "cheap" in slackcopy and "close" in slackcopy:
         recs = "Hi there! :wave: Here are some cheap and close lunch options:\n"
@@ -95,5 +93,5 @@ def lunch(request):
 
 #    return JsonResponse({"response_type": "in_channel", "text": recs})
 
-    if office is not None: return JsonResponse({"response_type": "in_channel", "text": recs})
+    if slacktoken in [TS_SLACK_KEY, CASA_SLACK_KEY]: return JsonResponse({"response_type": "in_channel", "text": recs})
     else: return HttpResponseForbidden()
