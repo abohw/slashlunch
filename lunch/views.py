@@ -20,10 +20,16 @@ def lunch(request):
     slacktoken = request.POST.get('token')
     slackcopy = request.POST.get('text')
 
+    if slacktoken == settings.CASA_SLACK_KEY:
+        office = '39.1015337,-84.5173639'
+    if slacktoken == settings.TS_SLACK_KEY:
+        office = '47.6139026,-122.3223522'
+    else slacktoken is Null
+
     if "cheap" in slackcopy and "close" in slackcopy:
         recs = "Hi there! :wave: Here are some cheap and close lunch options:\n"
         venues = client.venues.explore(params={
-        'll': '39.1015337,-84.5173639',
+        'll': office,
         'radius': '485',
         'section': 'food',
         'price': '1',
@@ -31,7 +37,7 @@ def lunch(request):
     elif "cheap" in slackcopy:
         recs = "Hi there! :wave: Here are some cheap lunch options:\n"
         venues = client.venues.explore(params={
-        'll': '39.1015337,-84.5173639',
+        'll': office,
         'radius': '1750',
         'section': 'food',
         'price': '1',
@@ -39,7 +45,7 @@ def lunch(request):
     elif "close" in slackcopy:
         recs = "Hi there! :wave: Here are some close lunch options:\n"
         venues = client.venues.explore(params={
-        'll': '39.1015337,-84.5173639',
+        'll': office,
         'radius': '485',
         'section': 'food',
         'price': '1,2',
@@ -47,7 +53,7 @@ def lunch(request):
     elif not slackcopy:
         recs = "Hi there! :wave: Here are some lunch options:\n"
         venues = client.venues.explore(params={
-        'll': '39.1015337,-84.5173639',
+        'll': office,
         'radius': '1750',
         'section': 'food',
         'price': '1,2',
@@ -55,7 +61,7 @@ def lunch(request):
     else:
         recs = "Hi there! :wave: Here are some options with %s:\n" % (slackcopy)
         venues = client.venues.explore(params={
-        'll': '39.1015337,-84.5173639',
+        'll': office,
         'radius': '2900',
         'query': slackcopy,
         'price': '1,2',
@@ -88,5 +94,5 @@ def lunch(request):
 
 #    return JsonResponse({"response_type": "in_channel", "text": recs})
 
-    if slacktoken == settings.SLACK_KEY: return JsonResponse({"response_type": "in_channel", "text": recs})
+    if slacktoken is not Null: return JsonResponse({"response_type": "in_channel", "text": recs})
     else: return HttpResponseForbidden()
