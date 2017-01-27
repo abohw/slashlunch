@@ -7,7 +7,6 @@ from django.http import JsonResponse
 from django.http import HttpResponseForbidden
 import foursquare
 from django.conf import settings
-from pprint import pprint
 import random
 
 # Create your views here.
@@ -17,6 +16,7 @@ import random
 def lunch(request):
 
     client = foursquare.Foursquare(client_id=settings.FS_CLIENT_ID, client_secret=settings.FS_CLIENT_SECRET)
+
     slacktoken = request.POST.get('token')
     slackcopy = request.POST.get('text')
 
@@ -93,5 +93,8 @@ def lunch(request):
 
 #    return JsonResponse({"response_type": "in_channel", "text": recs})
 
-    if slacktoken in [settings.TS_SLACK_KEY, settings.CASA_SLACK_KEY]: return JsonResponse({"response_type": "in_channel", "text": recs})
+    if slacktoken in [settings.TS_SLACK_KEY, settings.CASA_SLACK_KEY]:
+        with open('lunchbot.log', 'a') as f:
+            f.write('%s: %s requested %s in #%s\n', % (request.POST.get('team_domain'), request.POST.get('user_name'), slackcopy, request.POST.get('channel_name')))
+            return JsonResponse({"response_type": "in_channel", "text": recs})
     else: return HttpResponseForbidden()
