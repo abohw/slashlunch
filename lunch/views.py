@@ -22,8 +22,10 @@ def lunch(request):
 
     if slacktoken == settings.TS_SLACK_KEY:
         office = '47.6139026,-122.3223522'
+        radius = '932'
     else:
         office = '39.1015337,-84.5173639'
+        radius = '1750'
 
     if "cheap" in slackcopy and "close" in slackcopy:
         recs = "Hi there! :wave: Here are some cheap and close lunch options:\n"
@@ -37,7 +39,7 @@ def lunch(request):
         recs = "Hi there! :wave: Here are some cheap lunch options:\n"
         venues = client.venues.explore(params={
         'll': office,
-        'radius': '1750',
+        'radius': radius,
         'section': 'food',
         'price': '1',
         'openNow': '1'})
@@ -53,7 +55,7 @@ def lunch(request):
         recs = "Hi there! :wave: Here are some lunch options:\n"
         venues = client.venues.explore(params={
         'll': office,
-        'radius': '1750',
+        'radius': radius,
         'section': 'food',
         'price': '1,2',
         'openNow': '1'})
