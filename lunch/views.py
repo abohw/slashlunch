@@ -98,6 +98,6 @@ def lunch(request):
 
     if slacktoken in [settings.TS_SLACK_KEY, settings.CASA_SLACK_KEY]:
         with open('lunchbot.log', 'a') as f:
-            f.write('%s %s %s: %s requested %s in #%s\n' % (time.strftime("%d/%m/%Y"), time.strftime("%I:%M:%S"), request.POST.get('team_domain'), request.POST.get('user_name'), slackcopy, request.POST.get('channel_name')))
+            f.write('%s %s %s: %s requested %s in #%s\n' % (time.strftime("%m/%d/%Y"), time.strftime("%I:%M:%S"), request.POST.get('team_domain'), request.POST.get('user_name'), slackcopy, request.POST.get('channel_name')))
             return JsonResponse({"response_type": "in_channel", "text": recs})
     else: return HttpResponseForbidden()
