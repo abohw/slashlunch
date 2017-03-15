@@ -23,15 +23,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '2i@d^j6*q459k_r=-g&v)9x0#0-)lcpa82t#en8$$yzft7tq#2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
 
 # Slack key
 
-CASA_SLACK_KEY = os.getenv('CASA_SLACK_KEY')
-TS_SLACK_KEY = os.getenv('TS_SLACK_KEY')
+# CASA_SLACK_KEY = os.getenv('CASA_SLACK_KEY')
+# TS_SLACK_KEY = os.getenv('TS_SLACK_KEY')
+# CW_SLACK_KEY = os.getenv('CW_SLACK_KEY')
 
 
 # Foursquare keys
@@ -119,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 
