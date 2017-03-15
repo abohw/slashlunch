@@ -132,4 +132,4 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/home/alex/Env/slash-lunch/lib/python2.7/site-packages/django/contrib/admin/static/admin/'
+STATIC_URL = '/home/alex/Env/slash-lunch/lib/python2.7/site-packages/django/contrib/admin/static/'
