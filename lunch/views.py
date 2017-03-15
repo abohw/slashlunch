@@ -24,6 +24,9 @@ def lunch(request):
     if slacktoken == settings.TS_SLACK_KEY:
         office = '47.6139026,-122.3223522'
         radius = '932'
+    elif slacktoken == settings.CW_SLACK_KEY:
+        office = '39.1050419,-84.5135214'
+        radius = '1750'
     else:
         office = '39.1015337,-84.5173639'
         radius = '1750'
