@@ -5,15 +5,17 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404
 import foursquare
 from django.conf import settings
 import random
 import time
 
-# Create your views here.
+from .models import Company
 
 @require_http_methods(["POST",])
 @csrf_exempt
+
 def lunch(request):
 
     client = foursquare.Foursquare(client_id=settings.FS_CLIENT_ID, client_secret=settings.FS_CLIENT_SECRET)
@@ -21,15 +23,20 @@ def lunch(request):
     slacktoken = request.POST.get('token')
     slackcopy = request.POST.get('text')
 
-    if slacktoken == settings.TS_SLACK_KEY:
-        office = '47.6139026,-122.3223522'
-        radius = '932'
-    elif slacktoken == settings.CW_SLACK_KEY:
-        office = '39.1050419,-84.5135214'
-        radius = '1750'
-    else:
-        office = '39.1015337,-84.5173639'
-        radius = '1750'
+    company = get_object_or_404(Company, key__exact=slacktoken)
+
+    office = company.office
+    radius = company.radius
+
+#    if slacktoken == settings.TS_SLACK_KEY:
+#        office = '47.6139026,-122.3223522'
+#        radius = '932'
+#    elif slacktoken == settings.CW_SLACK_KEY:
+#        office = '39.1050419,-84.5135214'
+#        radius = '1750'
+#    else:
+#        office = '39.1015337,-84.5173639'
+#        radius = '1750'
 
     if "cheap" in slackcopy and "close" in slackcopy:
         recs = "Hi there! :wave: Here are some cheap and close lunch options:\n"
@@ -99,8 +106,14 @@ def lunch(request):
 
 #    return JsonResponse({"response_type": "in_channel", "text": recs})
 
-    if slacktoken in [settings.TS_SLACK_KEY, settings.CASA_SLACK_KEY, settings.CW_SLACK_KEY]:
+#    if slacktoken in [settings.TS_SLACK_KEY, settings.CASA_SLACK_KEY, settings.CW_SLACK_KEY]:
+#        with open('lunchbot.log', 'a') as f:
+#            f.write('%s %s %s: %s requested %s in #%s\n' % (time.strftime("%m/%d/%Y"), time.strftime("%I:%M:%S"), request.POST.get('team_domain'), request.POST.get('user_name'), slackcopy, request.POST.get('channel_name')))
+#            return JsonResponse({"response_type": "in_channel", "text": recs})
+#    else: return HttpResponseForbidden()
+
+    if company is None: return HttpResponseForbidden()
+    else:
         with open('lunchbot.log', 'a') as f:
             f.write('%s %s %s: %s requested %s in #%s\n' % (time.strftime("%m/%d/%Y"), time.strftime("%I:%M:%S"), request.POST.get('team_domain'), request.POST.get('user_name'), slackcopy, request.POST.get('channel_name')))
             return JsonResponse({"response_type": "in_channel", "text": recs})
-    else: return HttpResponseForbidden()
