@@ -23,7 +23,7 @@ def lunch(request):
     slacktoken = request.POST.get('token')
     slackcopy = request.POST.get('text')
 
-    company = company.objects.get(key__exact=slacktoken)
+    company = Company.objects.get(key__exact=slacktoken)
 
     office = company.office
     radius = company.radius
