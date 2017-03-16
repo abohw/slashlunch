@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.http import HttpResponseForbidden
-from django.shortcuts import get_object_or_404
 import foursquare
 from django.conf import settings
 import random
@@ -25,23 +23,10 @@ def lunch(request):
 
     company = Company.objects.get(key__exact=slacktoken)
 
-    office = company.office
-    radius = company.radius
-
-#    if slacktoken == settings.TS_SLACK_KEY:
-#        office = '47.6139026,-122.3223522'
-#        radius = '932'
-#    elif slacktoken == settings.CW_SLACK_KEY:
-#        office = '39.1050419,-84.5135214'
-#        radius = '1750'
-#    else:
-#        office = '39.1015337,-84.5173639'
-#        radius = '1750'
-
     if "cheap" in slackcopy and "close" in slackcopy:
         recs = "Hi there! :wave: Here are some cheap and close lunch options:\n"
         venues = client.venues.explore(params={
-        'll': office,
+        'll': company.office,
         'radius': '485',
         'section': 'food',
         'price': '1',
@@ -49,15 +34,15 @@ def lunch(request):
     elif "cheap" in slackcopy:
         recs = "Hi there! :wave: Here are some cheap lunch options:\n"
         venues = client.venues.explore(params={
-        'll': office,
-        'radius': radius,
+        'll': company.office,
+        'radius': company.radius,
         'section': 'food',
         'price': '1',
         'openNow': '1'})
     elif "close" in slackcopy:
         recs = "Hi there! :wave: Here are some close lunch options:\n"
         venues = client.venues.explore(params={
-        'll': office,
+        'll': company.office,
         'radius': '485',
         'section': 'food',
         'price': '1,2',
@@ -65,15 +50,15 @@ def lunch(request):
     elif not slackcopy:
         recs = "Hi there! :wave: Here are some lunch options:\n"
         venues = client.venues.explore(params={
-        'll': office,
-        'radius': radius,
+        'll': company.office,
+        'radius': company.radius,
         'section': 'food',
         'price': '1,2',
         'openNow': '1'})
     else:
         recs = "Hi there! :wave: Here are some options with %s:\n" % (slackcopy)
         venues = client.venues.explore(params={
-        'll': office,
+        'll': company.office,
         'radius': '2900',
         'query': slackcopy,
         'price': '1,2',
@@ -103,14 +88,6 @@ def lunch(request):
         if index == 3: emoji = ":four: "
         if index == 4: emoji = ":five: "
         recs += '%s %s \n%s \n' % (emoji, name[0], name[1])
-
-#    return JsonResponse({"response_type": "in_channel", "text": recs})
-
-#    if slacktoken in [settings.TS_SLACK_KEY, settings.CASA_SLACK_KEY, settings.CW_SLACK_KEY]:
-#        with open('lunchbot.log', 'a') as f:
-#            f.write('%s %s %s: %s requested %s in #%s\n' % (time.strftime("%m/%d/%Y"), time.strftime("%I:%M:%S"), request.POST.get('team_domain'), request.POST.get('user_name'), slackcopy, request.POST.get('channel_name')))
-#            return JsonResponse({"response_type": "in_channel", "text": recs})
-#    else: return HttpResponseForbidden()
 
     if company is None: return HttpResponseForbidden()
     else:

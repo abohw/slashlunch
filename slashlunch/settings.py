@@ -28,13 +28,6 @@ DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 
-# Slack key
-
-# CASA_SLACK_KEY = os.getenv('CASA_SLACK_KEY')
-# TS_SLACK_KEY = os.getenv('TS_SLACK_KEY')
-# CW_SLACK_KEY = os.getenv('CW_SLACK_KEY')
-
-
 # Foursquare keys
 
 FS_CLIENT_ID = os.getenv('FS_CLIENT_ID')
