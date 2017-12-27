@@ -3,6 +3,7 @@
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.http import HttpResponse
 from django.http import HttpResponseForbidden
 import foursquare
 from django.conf import settings
@@ -94,3 +95,22 @@ def lunch(request):
         with open('lunchbot.log', 'a') as f:
             f.write('%s %s %s: %s requested %s in #%s\n' % (time.strftime("%m/%d/%Y"), time.strftime("%I:%M:%S"), request.POST.get('team_domain'), request.POST.get('user_name'), slackcopy, request.POST.get('channel_name')))
             return JsonResponse({"response_type": "in_channel", "text": recs})
+
+@require_http_methods(["POST",])
+@csrf_exempt
+
+def AddCompany(request):
+
+    if settings.DEBUG or request.META['HTTP_REFERER'] is u'powerful-anchorage-82986.herokuapp.com':
+
+        cokey = request.POST.get('token')
+        coname = request.POST.get('name')
+        coradius = request.POST.get('radius')
+        cooffice = request.POST.get('ll')
+
+        co = Company(name=coname,key=cokey,office=cooffice,radius=coradius)
+        co.save()
+
+        return HttpResponse(status=204)
+
+    else: return HttpResponseForbidden()

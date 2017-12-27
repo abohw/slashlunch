@@ -19,5 +19,6 @@ from lunch import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^addco$', views.AddCompany, name='AddCompany'),
     url(r'^lunch$', views.lunch, name='lunch')
 ]
